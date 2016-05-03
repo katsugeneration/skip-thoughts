@@ -49,7 +49,7 @@ def load_params(path, params):
     """
     Load parameters
     """
-    pp = numpy.load(path)
+    pp = numpy.load('%s.npz'%path)
     for kk, vv in params.iteritems():
         if kk not in pp:
             warnings.warn('%s is not in the archive'%kk)

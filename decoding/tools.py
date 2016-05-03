@@ -16,8 +16,8 @@ from search import gen_sample
 #-----------------------------------------------------------------------------#
 # Specify model and dictionary locations here
 #-----------------------------------------------------------------------------#
-path_to_model = '/u/rkiros/research/semhash/models/toydec.npz'
-path_to_dictionary = '/ais/gobi3/u/rkiros/flickr8k/dictionary.pkl'
+path_to_model = '../training/model'
+path_to_dictionary = '../training/word_dict'
 #-----------------------------------------------------------------------------#
 
 def load_model():
@@ -41,6 +41,9 @@ def load_model():
     print 'Loading model options...'
     with open('%s.pkl'%path_to_model, 'rb') as f:
         options = pkl.load(f)
+    options['n_words'] = len(word_idict)
+    options['dimctx'] = 2400
+    options['doutput'] = False
 
     # Load parameters
     print 'Loading model parameters...'

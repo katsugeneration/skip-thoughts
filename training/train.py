@@ -64,7 +64,7 @@ def trainer(X,
     print model_options
 
     # reload options
-    if reload_ and os.path.exists(saveto):
+    if reload_ and os.path.exists('%s.pkl'%saveto):
         print 'reloading...' + saveto
         with open('%s.pkl'%saveto, 'rb') as f:
             models_options = pkl.load(f)
@@ -79,6 +79,7 @@ def trainer(X,
         word_idict[vv] = kk
     word_idict[0] = '<eos>'
     word_idict[1] = 'UNK'
+    model_options['n_words'] = len(word_idict)
 
     print 'Building model'
     params = init_params(model_options)
@@ -180,6 +181,13 @@ def trainer(X,
                 print 'Done'
 
         print 'Seen %d samples'%n_samples
+        
+    print 'Saving...',
+
+    params = unzip(tparams)
+    numpy.savez(saveto, history_errs=[], **params)
+    pkl.dump(model_options, open('%s.pkl'%saveto, 'wb'))
+    print 'Done'
 
 if __name__ == '__main__':
     pass

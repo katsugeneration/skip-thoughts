@@ -12,19 +12,20 @@ import nltk
 
 from collections import OrderedDict, defaultdict
 from nltk.tokenize import word_tokenize
-from scipy.linalg import norm
-from gensim.models import Word2Vec as word2vec
-from sklearn.linear_model import LinearRegression
+# from scipy.linalg import norm
+# from gensim.models import Word2Vec as word2vec
+# from sklearn.linear_model import LinearRegression
 
+import vocab
 from utils import load_params, init_tparams
 from model import init_params, build_encoder, build_encoder_w2v
 
 #-----------------------------------------------------------------------------#
 # Specify model and dictionary locations here
 #-----------------------------------------------------------------------------#
-path_to_model = '/u/rkiros/research/semhash/models/toy.npz'
-path_to_dictionary = '/ais/gobi3/u/rkiros/bookgen/book_dictionary_large.pkl'
-path_to_word2vec = '/ais/gobi3/u/rkiros/word2vec/GoogleNews-vectors-negative300.bin'
+path_to_model = 'model'
+path_to_dictionary = 'word_dict'
+# path_to_word2vec = '/ais/gobi3/u/rkiros/word2vec/GoogleNews-vectors-negative300.bin'
 #-----------------------------------------------------------------------------#
 
 def load_model(embed_map=None):
@@ -43,11 +44,14 @@ def load_model(embed_map=None):
         word_idict[vv] = kk
     word_idict[0] = '<eos>'
     word_idict[1] = 'UNK'
+    worddict['<eos>'] = 0
+    worddict['UNK'] = 1
 
     # Load model options
     print 'Loading model options...'
     with open('%s.pkl'%path_to_model, 'rb') as f:
         options = pkl.load(f)
+    options['n_words'] = len(word_idict)
 
     # Load parameters
     print 'Loading model parameters...'
@@ -67,11 +71,13 @@ def load_model(embed_map=None):
     # Load word2vec, if applicable
     if embed_map == None:
         print 'Loading word2vec embeddings...'
-        embed_map = load_googlenews_vectors(path_to_word2vec)
-
+        # embed_map = load_googlenews_vectors(path_to_word2vec)
+        embed_map = vocab.load_dictionary("word_dict")
+        
     # Lookup table using vocab expansion trick
     print 'Creating word lookup tables...'
-    table = lookup_table(options, embed_map, worddict, word_idict, f_emb)
+    # table = lookup_table(options, embed_map, worddict, word_idict, f_emb)
+    table = worddict
 
     # Store everything we need in a dictionary
     print 'Packing up...'
@@ -139,6 +145,7 @@ def preprocess(text):
     Preprocess text for encoder
     """
     X = []
+    # nltk.download()
     sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
     for t in text:
         sents = sent_detector.tokenize(t)

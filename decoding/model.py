@@ -27,7 +27,7 @@ def init_params(options, preemb=None):
     params = get_layer('ff')[0](options, params, prefix='ff_state', nin=options['dimctx'], nout=options['dim'])
 
     # Decoder
-    params = get_layer(options['decoder'])[0](options, params, prefix='decoder',
+    params = get_layer(options['decoder'])[0](options, params, prefix='decoder_b',
                                               nin=options['dim_word'], dim=options['dim'])
 
     # Output layer
@@ -109,7 +109,7 @@ def build_sampler(tparams, options, trng):
 
     # decoder
     proj = get_layer(options['decoder'])[1](tparams, emb, init_state, options,
-                                            prefix='decoder',
+                                            prefix='decoder_b',
                                             mask=None,
                                             one_step=True)
     next_state = proj[0]
