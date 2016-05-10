@@ -17,6 +17,8 @@ def build_dictionary(text):
             if w not in wordcount:
                 wordcount[w] = 0
             wordcount[w] += 1
+    wordcount = OrderedDict(sorted(wordcount.items(), key=lambda x:x[1], reverse=True))
+    print(wordcount)
     words = wordcount.keys()
     freqs = wordcount.values()
     sorted_idx = numpy.argsort(freqs)[::-1]

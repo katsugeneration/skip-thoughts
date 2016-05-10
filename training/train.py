@@ -79,7 +79,7 @@ def trainer(X,
         word_idict[vv] = kk
     word_idict[0] = '<eos>'
     word_idict[1] = 'UNK'
-    model_options['n_words'] = len(word_idict)
+    # model_options['n_words'] = len(word_idict)
 
     print 'Building model'
     params = init_params(model_options)
