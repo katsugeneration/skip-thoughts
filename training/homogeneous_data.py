@@ -90,10 +90,14 @@ def prepare_data(seqs_x, seqs_y, seqs_z, worddict, maxlen=None, n_words=20000):
     seqs_x = seqsX
     seqs_y = seqsY
     seqs_z = seqsZ
+    print(seqs_x)
 
     lengths_x = [len(s) for s in seqs_x]
     lengths_y = [len(s) for s in seqs_y]
     lengths_z = [len(s) for s in seqs_z]
+    print(lengths_x)
+    print(lengths_y)
+    print(lengths_z)
 
     if maxlen != None:
         new_seqs_x = []
@@ -119,6 +123,7 @@ def prepare_data(seqs_x, seqs_y, seqs_z, worddict, maxlen=None, n_words=20000):
 
         if len(lengths_x) < 1 or len(lengths_y) < 1 or len(lengths_z) < 1:
             return None, None, None, None, None, None
+    print(seqs_x)
 
     n_samples = len(seqs_x)
     maxlen_x = numpy.max(lengths_x) + 1

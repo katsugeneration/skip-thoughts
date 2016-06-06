@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Main trainer function
 """
@@ -72,6 +74,8 @@ def trainer(X,
     # load dictionary
     print 'Loading dictionary...'
     worddict = load_dictionary(dictionary)
+    # for item in worddict.items():
+    #     print(item[0])
 
     # Inverse dictionary
     word_idict = dict()
@@ -150,11 +154,14 @@ def trainer(X,
         print 'Epoch ', eidx
 
         for x, y, z in train_iter:
+            for words in x:
+                print(words)
             n_samples += len(x)
             uidx += 1
 
             x, x_mask, y, y_mask, z, z_mask = homogeneous_data.prepare_data(x, y, z, worddict, maxlen=maxlen_w, n_words=n_words)
-
+            print(x)
+            
             if x == None:
                 print 'Minibatch with zero sample under length ', maxlen_w
                 uidx -= 1
@@ -164,6 +171,8 @@ def trainer(X,
             cost = f_grad_shared(x, x_mask, y, y_mask, z, z_mask)
             f_update(lrate)
             ud = time.time() - ud_start
+            params = unzip(tparams)
+            # print(params)
 
             if numpy.isnan(cost) or numpy.isinf(cost):
                 print 'NaN detected'

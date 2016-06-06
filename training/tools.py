@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """
 A selection of functions for extracting vectors
 Encoder + vocab expansion
@@ -51,7 +53,6 @@ def load_model(embed_map=None):
     print 'Loading model options...'
     with open('%s.pkl'%path_to_model, 'rb') as f:
         options = pkl.load(f)
-    options['n_words'] = len(word_idict)
 
     # Load parameters
     print 'Loading model parameters...'
@@ -105,6 +106,7 @@ def encode(model, X, use_norm=True, verbose=True, batch_size=128, use_eos=False)
     ds = defaultdict(list)
     captions = [s.split() for s in X]
     for i,s in enumerate(captions):
+        if len(s) == 0: continue 
         ds[len(s)].append(i)
 
     # Get features. This encodes by length, in order to avoid wasting computation
@@ -146,14 +148,14 @@ def preprocess(text):
     """
     X = []
     # nltk.download()
-    sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
+    # sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
     for t in text:
-        sents = sent_detector.tokenize(t)
-        result = ''
-        for s in sents:
-            tokens = word_tokenize(s)
-            result += ' ' + ' '.join(tokens)
-        X.append(result)
+        # sents = sent_detector.tokenize(t)
+        # result = ''
+        # for s in sents:
+        #     tokens = word_tokenize(s)
+        #     result += ' ' + ' '.join(tokens)
+        X.append(t)
     return X
 
 def load_googlenews_vectors():

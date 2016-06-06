@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """
 A selection of functions for the decoder
 Loading models, generating text
@@ -41,7 +43,6 @@ def load_model():
     print 'Loading model options...'
     with open('%s.pkl'%path_to_model, 'rb') as f:
         options = pkl.load(f)
-    options['n_words'] = len(word_idict)
     options['dimctx'] = 2400
     options['doutput'] = False
 
